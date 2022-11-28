@@ -208,7 +208,7 @@ function generateCurrent(cid)
                 }, function(statementUpdated)
                     if statementUpdated > 0 then
                         local statementTable = {['withdraw'] = 0, ['deposited'] = amt, ['type'] = text, ['sort_code'] = self.sortcode, ['date'] = time, ['balance'] = self.balance, ['account'] = "Current", ['record_id'] = statementUpdated, ['account_number'] = self.account, ['character_id'] = self.cid }
-                        self.bankStatement[#self.bankStatement+1] = statementTable
+                        self.bankStatement[#self.bankStatement + 1] = statementTable
                         if self.source ~= -1 then
                             TriggerClientEvent('pw:updateBank', self.source, self.amount)
                         end
@@ -253,7 +253,7 @@ function generateCurrent(cid)
                         if statementUpdated > 0 then
                             successOri = true
                             local statementTable = {['withdraw'] = amt, ['deposited'] = 0, ['type'] = text, ['sort_code'] = self.sortcode, ['date'] = time, ['balance'] = self.balance, ['account'] = "Current", ['record_id'] = statementUpdated, ['account_number'] = self.account, ['character_id'] = self.cid }
-                            self.bankStatement[#self.bankStatement+1] = statementTable
+                            self.bankStatement[#self.bankStatement + 1] = statementTable
 
                             if self.source ~= -1 then
                                 TriggerClientEvent('pw:updateBank', self.source, self.amount)
@@ -345,7 +345,7 @@ function generateSavings(cid)
             }, function(statement)
                 if statement > 0 then
                     local statementTable = {['withdraw'] = nil, ['deposited'] = amt, ['type'] = text,  ['date'] = time, ['balance'] = self.balance, ['account'] = "Savings", ['record_id'] = statement, ['character_id'] = self.cid }
-                    self.bankStatement[#self.bankStatement+1] = statementTable
+                    self.bankStatement[#self.bankStatement + 1] = statementTable
                     return true
                 end
                 return false
@@ -370,7 +370,7 @@ function generateSavings(cid)
                 }, function(statement)
                     if statement > 0 then
                         local statementTable = {['withdraw'] = amt, ['deposited'] = nil, ['type'] = text,  ['date'] = time, ['balance'] = self.balance, ['account'] = "Savings", ['record_id'] = statement, ['character_id'] = self.cid }
-                        self.bankStatement[#self.bankStatement+1] = statementTable
+                        self.bankStatement[#self.bankStatement + 1] = statementTable
                         return true
                     end
                     return false

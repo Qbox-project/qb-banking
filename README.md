@@ -1,8 +1,8 @@
 # qb-banking
 
 ## Dependencies
-- [qb-core](https://github.com/qbcore-framework/qb-core)
-- [qb-logs](https://github.com/qbcore-framework/qb-logs) - For keeping records
+- [qb-core](https://github.com/Qbox-project/qb-core)
+- [qb-logs](https://github.com/Qbox-project/qb-logs) - For keeping records
 
 ## Screenshots
 ![Account Home](https://i.imgur.com/XazaYYI.png)
@@ -38,40 +38,4 @@ setr UseTarget false
 - Global Target Option
 ```
 setr UseTarget true
-```
-
-## Configuration
-```
-Config = {}
-
-Config.Blip = {
-    blipName = "Bank", -- Blips name for banks
-    blipType = 108, -- Blip icon for banks
-    blipColor = 37, -- Blip color for banks
-    blipScale = 0.8 -- Blip scale for banks
-    }
-
-Config.ATMModels = { -- Props which will be considered as ATM (Can use /atm nearby)
-        "prop_atm_01",
-        "prop_atm_02",
-        "prop_atm_03",
-        "prop_fleeca_atm"
-    }
-
-Config.BankLocations = { -- Bank locations
-    { ['x'] = 149.9,    ['y'] = -1040.46,   ['z'] = 29.37,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = 314.23,   ['y'] = -278.83,    ['z'] = 54.17,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = -350.8,   ['y'] = -49.57,     ['z'] = 49.04,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = -1213.0,  ['y'] = -330.39,    ['z'] = 37.79,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = -2962.71, ['y'] = 483.0,      ['z'] = 15.7,   ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = 1175.07,  ['y'] = 2706.41,    ['z'] = 38.09,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    { ['x'] = 1653.41,  ['y'] = 4850.6,     ['z'] = 41.99,  ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    
-    -- Pacific Standard Bank
-    { ['x'] = 246.64, ['y'] = 223.20, ['z'] = 106.29, ['bankOpen'] = true, ['bankCooldown'] = 0 },
-    -- Paleto
-    { ['x'] = -113.22, ['y'] = 6470.03, ['z'] = 31.63, ['bankOpen'] = true, ['bankCooldown'] = 0 },
-}
-
-Config.cardTypes = { "visa", "mastercard"} -- Debit card types (When requesting a debit card it gives randomly one of these.)
 ```
