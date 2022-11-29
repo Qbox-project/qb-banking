@@ -5,17 +5,17 @@ CreateThread(function()
         'Business'
     })
 
-    if accts[1] ~= nil then
+    if accts[1] then
         for _, v in pairs(accts) do
             local acctType = v.business
 
-            if businessAccounts[acctType] == nil then
+            if not businessAccounts[acctType] then
                 businessAccounts[acctType] = {}
             end
 
             businessAccounts[acctType][tonumber(v.businessid)] = GeneratebusinessAccount(tonumber(v.account_number), tonumber(v.sort_code), tonumber(v.businessid))
 
-            while businessAccounts[acctType][tonumber(v.businessid)] == nil do
+            while not businessAccounts[acctType][tonumber(v.businessid)] do
                 Wait(0)
             end
         end
@@ -25,7 +25,7 @@ CreateThread(function()
         'Savings'
     })
 
-    if savings[1] ~= nil then
+    if savings then
         for _, v in pairs(savings) do
             savingsAccounts[v.citizenid] = generateSavings(v.citizenid)
         end
@@ -35,7 +35,7 @@ CreateThread(function()
         'Gang'
     })
 
-    if gangs[1] ~= nil then
+    if gangs then
         for _, v in pairs(gangs) do
             gangAccounts[v.gangid] = loadGangAccount(v.gangid)
         end
@@ -210,7 +210,9 @@ RegisterNetEvent('qb-banking:doQuickDeposit', function(amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    while Player == nil do Wait(0) end
+    if not Player then
+        return
+    end
 
     local currentCash = Player.Functions.GetMoney('cash')
 
@@ -238,7 +240,9 @@ RegisterNetEvent('qb-banking:toggleCard', function(toggle)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    while Player == nil do Wait(0) end
+    if not Player then
+        return
+    end
 
     toggleBankCardLock(Player.PlayerData.citizenid, toggle)
 end)
@@ -247,7 +251,9 @@ RegisterNetEvent('qb-banking:doQuickWithdraw', function(amount, _)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    while Player == nil do Wait(0) end
+    if not Player then
+        return
+    end
 
     local currentCash = Player.Functions.GetMoney('bank')
     local newBankBalance = Player.Functions.GetMoney('bank')
@@ -272,11 +278,13 @@ RegisterNetEvent('qb-banking:doQuickWithdraw', function(amount, _)
 end)
 
 RegisterNetEvent('qb-banking:updatePin', function(currentBankCard, newPin)
-    if newPin ~= nil then
+    if newPin then
         local src = source
         local Player = QBCore.Functions.GetPlayer(src)
 
-        while Player == nil do Wait(0) end
+        if not Player then
+            return
+        end
 
         MySQL.update('UPDATE bank_cards SET cardPin = ? WHERE record_id = ?', {
             newPin,
@@ -296,7 +304,9 @@ RegisterNetEvent('qb-banking:savingsDeposit', function(amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    while Player == nil do Wait(0) end
+    if not Player then
+        return
+    end
 
     local currentBank = Player.Functions.GetMoney('bank')
 
@@ -304,8 +314,13 @@ RegisterNetEvent('qb-banking:savingsDeposit', function(amount)
         local bank = Player.Functions.RemoveMoney('bank', tonumber(amount))
         local savings = savingsAccounts[Player.PlayerData.citizenid].AddMoney(tonumber(amount), Lang:t('info.current_to_savings'))
 
-        while bank == nil do Wait(0) end
-        while savings == nil do Wait(0) end
+        if not bank then
+            return
+        end
+
+        if not savings then
+            return
+        end
 
         TriggerClientEvent('qb-banking:openBankScreen', src)
         TriggerClientEvent('qb-banking:successAlert', src, Lang:t('success.savings_deposit', {
@@ -319,7 +334,9 @@ RegisterNetEvent('qb-banking:savingsWithdraw', function(amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    while Player == nil do Wait(0) end
+    if not Player then
+        return
+    end
 
     local currentSavings = savingsAccounts[Player.PlayerData.citizenid].GetBalance()
 
@@ -327,8 +344,13 @@ RegisterNetEvent('qb-banking:savingsWithdraw', function(amount)
         local savings = savingsAccounts[Player.PlayerData.citizenid].RemoveMoney(tonumber(amount), Lang:t('info.savings_to_current'))
         local bank = Player.Functions.AddMoney('bank', tonumber(amount), 'banking-quick-withdraw')
 
-        while bank == nil do Wait(0) end
-        while savings == nil do Wait(0) end
+        if not bank then
+            return
+        end
+
+        if not savings then
+            return
+        end
 
         TriggerClientEvent('qb-banking:openBankScreen', src)
         TriggerClientEvent('qb-banking:successAlert', src, Lang:t('success.savings_withdrawal', {
@@ -345,7 +367,7 @@ RegisterNetEvent('qb-banking:createSavingsAccount', function()
 
     repeat
         Wait(0)
-    until success ~= nil
+    until success
 
     TriggerClientEvent('qb-banking:openBankScreen', src)
     TriggerClientEvent('qb-banking:successAlert', src, Lang:t('success.opened_savings'))

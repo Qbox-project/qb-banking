@@ -137,7 +137,7 @@ end
 --- CREATE A NEW business ACCOUNT ---
 -------------------------------------
 local function createbusinessAccount(accttype, bid, startingBalance)
-    if businessAccounts[accttype] == nil then
+    if not businessAccounts[accttype] then
         businessAccounts[accttype] = {}
     end
 

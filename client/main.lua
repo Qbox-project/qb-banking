@@ -29,7 +29,7 @@ end
 
 local function openAccountScreen()
     QBCore.Functions.TriggerCallback('qb-banking:getBankingInformation', function(banking)
-        if banking ~= nil then
+        if banking then
             SetNuiFocus(true, true)
             SendNUIMessage({
                 status = "openbank",
@@ -154,7 +154,7 @@ RegisterNUICallback("createSavingsAccount", function(_, cb)
 end)
 
 RegisterNUICallback("doDeposit", function(data, cb)
-    if tonumber(data.amount) ~= nil and tonumber(data.amount) > 0 then
+    if tonumber(data.amount) and tonumber(data.amount) > 0 then
         TriggerServerEvent('qb-banking:doQuickDeposit', data.amount)
 
         openAccountScreen()
@@ -166,7 +166,7 @@ RegisterNUICallback("doDeposit", function(data, cb)
 end)
 
 RegisterNUICallback("doWithdraw", function(data, cb)
-    if tonumber(data.amount) ~= nil and tonumber(data.amount) > 0 then
+    if tonumber(data.amount) and tonumber(data.amount) > 0 then
         TriggerServerEvent('qb-banking:doQuickWithdraw', data.amount, true)
 
         openAccountScreen()
@@ -178,7 +178,7 @@ RegisterNUICallback("doWithdraw", function(data, cb)
 end)
 
 RegisterNUICallback("doATMWithdraw", function(data, cb)
-    if tonumber(data.amount) ~= nil and tonumber(data.amount) > 0 then
+    if tonumber(data.amount) and tonumber(data.amount) > 0 then
         TriggerServerEvent('qb-banking:doQuickWithdraw', data.amount, false)
 
         openAccountScreen()
@@ -190,7 +190,7 @@ RegisterNUICallback("doATMWithdraw", function(data, cb)
 end)
 
 RegisterNUICallback("savingsDeposit", function(data, cb)
-    if tonumber(data.amount) ~= nil and tonumber(data.amount) > 0 then
+    if tonumber(data.amount) and tonumber(data.amount) > 0 then
         TriggerServerEvent('qb-banking:savingsDeposit', data.amount)
 
         openAccountScreen()
@@ -202,7 +202,7 @@ RegisterNUICallback("savingsDeposit", function(data, cb)
 end)
 
 RegisterNUICallback("savingsWithdraw", function(data, cb)
-    if tonumber(data.amount) ~= nil and tonumber(data.amount) > 0 then
+    if tonumber(data.amount) and tonumber(data.amount) > 0 then
         TriggerServerEvent('qb-banking:savingsWithdraw', data.amount)
 
         openAccountScreen()
@@ -214,7 +214,7 @@ RegisterNUICallback("savingsWithdraw", function(data, cb)
 end)
 
 RegisterNUICallback("doTransfer", function(data, cb)
-    if data ~= nil then
+    if data then
         TriggerServerEvent('qb-banking:initiateTransfer', data)
 
         cb("ok")
@@ -224,7 +224,7 @@ RegisterNUICallback("doTransfer", function(data, cb)
 end)
 
 RegisterNUICallback("createDebitCard", function(data, cb)
-    if data.pin ~= nil then
+    if data.pin then
         TriggerServerEvent('qb-banking:createBankCard', data.pin)
 
         cb("ok")
