@@ -203,7 +203,7 @@ RegisterNetEvent('qb-banking:createBankCard', function(pin)
 
     TriggerClientEvent('qb-banking:openBankScreen', src)
     TriggerClientEvent('qb-banking:successAlert', src, Lang:t('success.debit_card'))
-    TriggerEvent('qb-log:server:CreateLog', 'banking', 'Banking', 'lightgreen', "**" .. GetPlayerName(Player.PlayerData.source) .. " (citizenid: " .. Player.PlayerData.citizenid .. " | id: "..xPlayer.PlayerData.source .. ")** successfully ordered a debit card")
+    TriggerEvent('qb-log:server:CreateLog', 'banking', 'Banking', 'lightgreen', "**" .. GetPlayerName(Player.PlayerData.source) .. " (citizenid: " .. Player.PlayerData.citizenid .. " | id: " .. Player.PlayerData.source .. ")** successfully ordered a debit card")
 end)
 
 RegisterNetEvent('qb-banking:doQuickDeposit', function(amount)
