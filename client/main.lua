@@ -91,7 +91,7 @@ CreateThread(function()
                     {
                         name = 'qb-banking:bank',
                         event = "qb-banking:openBankScreen",
-                        icon = "fas fa-university",
+                        icon = "fa-solid fa-building-columns",
                         label = "Access Bank",
                         distance = 1.5
                     }

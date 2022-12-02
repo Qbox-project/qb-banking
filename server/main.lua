@@ -294,7 +294,10 @@ RegisterNetEvent('qb-banking:updatePin', function(currentBankCard, newPin)
                 TriggerClientEvent('qb-banking:openBankScreen', src)
                 TriggerClientEvent('qb-banking:successAlert', src, Lang:t('success.updated_pin'))
             else
-                TriggerClientEvent('QBCore:Notify', src, 'Error updating pin', "error")
+                TriggerClientEvent('ox_lib:notify', src, {
+                    description = 'Error updating pin',
+                    type = 'error'
+                })
             end
         end)
     end
@@ -378,54 +381,81 @@ QBCore.Commands.Add('givecash', Lang:t('command.givecash'), {
     {name = 'id', help = 'Player ID'},
     {name = 'amount', help = 'Amount'}
 }, true, function(source, args)
-	local id = tonumber(args[1])
-	local amount = math.ceil(tonumber(args[2]))
+    local id = tonumber(args[1])
+    local amount = math.ceil(tonumber(args[2]))
 
-	if id and amount then
-		local Player = QBCore.Functions.GetPlayer(source)
-		local Target = QBCore.Functions.GetPlayer(id)
+    if id and amount then
+        local Player = QBCore.Functions.GetPlayer(source)
+        local Target = QBCore.Functions.GetPlayer(id)
 
-		if Target and Player then
-			if not Player.PlayerData.metadata.isdead then
-				local distance = Player.PlayerData.metadata.inlaststand and 3.0 or 10.0
+        if Target and Player then
+            if not Player.PlayerData.metadata.isdead then
+                local distance = Player.PlayerData.metadata.inlaststand and 3.0 or 10.0
 
-				if #(GetEntityCoords(GetPlayerPed(src)) - GetEntityCoords(GetPlayerPed(id))) < distance then
+                if #(GetEntityCoords(GetPlayerPed(source)) - GetEntityCoords(GetPlayerPed(id))) < distance then
                     if amount > 0 then
                         if Player.Functions.RemoveMoney('cash', amount) then
                             if Target.Functions.AddMoney('cash', amount) then
-                                TriggerClientEvent('QBCore:Notify', source, Lang:t('success.give_cash', {
-                                    id = tostring(id),
-                                    cash = tostring(amount)
-                                }), "success")
-                                TriggerClientEvent('QBCore:Notify', id, Lang:t('success.received_cash', {
-                                    id = tostring(source),
-                                    cash = tostring(amount)
-                                }), "success")
+                                TriggerClientEvent('ox_lib:notify', source, {
+                                    description = Lang:t('success.give_cash', {
+                                        id = tostring(id),
+                                        cash = tostring(amount)
+                                    }),
+                                    type = 'success'
+                                })
+                                TriggerClientEvent('ox_lib:notify', id, {
+                                    description = Lang:t('success.received_cash', {
+                                        id = tostring(source),
+                                        cash = tostring(amount)
+                                    }),
+                                    type = 'success'
+                                })
                                 TriggerClientEvent("payanimation", source)
                             else
                                 -- Return player cash
                                 Player.Functions.AddMoney('cash', amount)
 
-                                TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_give'), "error")
+                                TriggerClientEvent('ox_lib:notify', source, {
+                                    description = Lang:t('error.not_give'),
+                                    type = 'error'
+                                })
                             end
                         else
-                            TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_enough'), "error")
+                            TriggerClientEvent('ox_lib:notify', source, {
+                                description = Lang:t('error.not_enough'),
+                                type = 'error'
+                            })
                         end
                     else
-                        TriggerClientEvent('QBCore:Notify', source, Lang:t('error.invalid_amount'), "error")
+                        TriggerClientEvent('ox_lib:notify', source, {
+                            description = Lang:t('error.invalid_amount'),
+                            type = 'error'
+                        })
                     end
-				else
-					TriggerClientEvent('QBCore:Notify', source, Lang:t('error.too_far_away'), "error")
-				end
-			else
-				TriggerClientEvent('QBCore:Notify', source, Lang:t('error.dead'), "error")
-			end
-		else
-			TriggerClientEvent('QBCore:Notify', source, Lang:t('error.wrong_id'), "error")
-		end
-	else
-		TriggerClientEvent('QBCore:Notify', source, Lang:t('error.givecash'), "error")
-	end
+                else
+                    TriggerClientEvent('ox_lib:notify', source, {
+                        description = Lang:t('error.too_far_away'),
+                        type = 'error'
+                    })
+                end
+            else
+                TriggerClientEvent('ox_lib:notify', source, {
+                    description = Lang:t('error.dead'),
+                    type = 'error'
+                })
+            end
+        else
+            TriggerClientEvent('ox_lib:notify', source, {
+                description = Lang:t('error.wrong_id'),
+                type = 'error'
+            })
+        end
+    else
+        TriggerClientEvent('ox_lib:notify', source, {
+            description = Lang:t('error.givecash'),
+            type = 'error'
+        })
+    end
 end)
 
 RegisterNetEvent("payanimation", function()
